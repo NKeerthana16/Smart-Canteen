@@ -1,0 +1,51 @@
+<div style="max-width: 650px; margin: 2rem auto; text-align: center;">
+    <div class="card" style="padding: 3rem 2rem;">
+        <div style="font-size: 4.5rem; color: var(--success-color); margin-bottom: 1rem;">
+            <i class="fa-solid fa-circle-check"></i>
+        </div>
+
+        <h2 style="font-weight: 800; font-size: 2.2rem; color: var(--dark-color); margin-bottom: 8px;">
+            Order Placed Successfully!
+        </h2>
+        <p style="color: var(--text-muted); margin-bottom: 2rem;">
+            Your pre-order has been registered. Please present your Order ID at the canteen counter during your selected pickup slot.
+        </p>
+
+        <!-- Order Info Box -->
+        <div style="background-color: var(--light-bg); border-radius: var(--radius-md); padding: 1.5rem; text-align: left; margin-bottom: 2rem; border: 1px solid var(--border-color);">
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span style="color: var(--text-muted);">Order ID:</span>
+                <strong style="font-size: 1.1rem; color: var(--primary-color);">{{ order.id }}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span style="color: var(--text-muted);">Pickup Date:</span>
+                <strong>{{ order.pickupDate }}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span style="color: var(--text-muted);">Pickup Queue Slot:</span>
+                <strong style="color: var(--secondary-color);">{{ order.pickupSlot }}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between; margin-bottom: 10px;">
+                <span style="color: var(--text-muted);">Total Amount Paid:</span>
+                <strong style="font-size: 1.2rem; color: var(--dark-color);">₹{{ order.totalAmount }}</strong>
+            </div>
+            <div style="display: flex; justify-content: space-between;">
+                <span style="color: var(--text-muted);">Initial Status:</span>
+                <span class="slot-status-badge badge-available">{{ order.status }}</span>
+            </div>
+        </div>
+
+        <!-- Actions -->
+        <div style="display: flex; gap: 12px; justify-content: center; flex-wrap: wrap;">
+            <a href="#/order-tracking/{{ order.id }}" class="btn btn-primary">
+                <i class="fa-solid fa-location-crosshairs"></i> Track Order Status
+            </a>
+            <a href="#/my-orders" class="btn btn-outline">
+                <i class="fa-solid fa-receipt"></i> View My Orders
+            </a>
+            <a href="#/menu" class="btn btn-secondary">
+                <i class="fa-solid fa-utensils"></i> Back to Menu
+            </a>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="canteenApp">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Smart Canteen - Pre-Order & Queue Management System</title>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Custom CSS (with Cache Busting) -->
+    <link rel="stylesheet" href="css/style.css?v=20261004_v5">
+
+    <!-- AngularJS 1.8.2 Core & Route CDNs -->
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
+
+    <!-- Application Script Files -->
+    <script src="js/data.js"></script>
+    <script src="js/app.js"></script>
+    <script src="js/services.js?v=20261004_v6"></script>
+    <script src="js/controllers.js?v=20261004_v6"></script>
+</head>
+
+<body>
+
+    <!-- Header Navigation Bar -->
+    <header class="navbar">
+        <a href="#/" class="navbar-brand">
+            <i class="fa-solid fa-utensils"></i>
+            <span>Smart Canteen</span>
+        </a>
+
+        <!-- Main Navigation Links -->
+        <ul class="nav-menu">
+            <!-- Public / Student Links -->
+            <li ng-if="!isLoggedIn || isStudent"><a href="#/" class="nav-link"><i class="fa-solid fa-house"></i> Home</a></li>
+            <li ng-if="!isLoggedIn || isStudent"><a href="#/menu" class="nav-link"><i class="fa-solid fa-book-open"></i> Menu</a></li>
+
+            <!-- Student Links -->
+            <li ng-if="isLoggedIn && isStudent">
+                <a href="#/student-dashboard" class="nav-link"><i class="fa-solid fa-chart-pie"></i> Dashboard</a>
+            </li>
+            <li ng-if="isLoggedIn && isStudent">
+                <a href="#/cart" class="nav-link">
+                    <i class="fa-solid fa-cart-shopping"></i> Cart
+                    <span class="cart-badge" ng-if="cartCount > 0">{{ cartCount }}</span>
+                </a>
+            </li>
+            <li ng-if="isLoggedIn && isStudent">
+                <a href="#/my-orders" class="nav-link"><i class="fa-solid fa-receipt"></i> My Orders</a>
+            </li>
+            <li ng-if="isLoggedIn && isStudent">
+                <a href="#/profile" class="nav-link"><i class="fa-solid fa-user"></i> Profile</a>
+            </li>
+            <li ng-if="isLoggedIn && isStudent">
+                <a href="#/feedback" class="nav-link"><i class="fa-solid fa-comment-dots"></i> Feedback</a>
+            </li>
+
+            <!-- Admin Links -->
+            <li ng-if="isLoggedIn && isAdmin">
+                <a href="#/admin-dashboard" class="nav-link"><i class="fa-solid fa-gauge-high"></i> Dashboard</a>
+            </li>
+            <li ng-if="isLoggedIn && isAdmin">
+                <a href="#/admin-food" class="nav-link"><i class="fa-solid fa-burger"></i> Foods</a>
+            </li>
+            <li ng-if="isLoggedIn && isAdmin">
+                <a href="#/admin-categories" class="nav-link"><i class="fa-solid fa-tags"></i> Categories</a>
+            </li>
+            <li ng-if="isLoggedIn && isAdmin">
+                <a href="#/admin-slots" class="nav-link"><i class="fa-solid fa-clock"></i> Slots</a>
+            </li>
+            <li ng-if="isLoggedIn && isAdmin">
+                <a href="#/admin-orders" class="nav-link"><i class="fa-solid fa-list-check"></i> Orders</a>
+            </li>
+            <li ng-if="isLoggedIn && isAdmin">
+                <a href="#/admin-users" class="nav-link"><i class="fa-solid fa-users"></i> Users</a>
+            </li>
+            <li ng-if="isLoggedIn && isAdmin">
+                <a href="#/admin-feedback" class="nav-link"><i class="fa-solid fa-comments"></i> Feedback</a>
+            </li>
+            <li ng-if="isLoggedIn && isAdmin">
+                <a href="#/admin-reports" class="nav-link"><i class="fa-solid fa-chart-line"></i> Reports</a>
+            </li>
+        </ul>
+
+        <!-- Authentication & Profile Actions -->
+        <div class="user-actions">
+            <a href="#/login" ng-if="!isLoggedIn" class="btn btn-outline btn-sm"><i class="fa-solid fa-right-to-bracket"></i> Login</a>
+            <a href="#/register" ng-if="!isLoggedIn" class="btn btn-primary btn-sm"><i class="fa-solid fa-user-plus"></i> Register</a>
+
+            <div ng-if="isLoggedIn" class="user-profile-badge">
+                <span class="user-name-tag">
+                    <i class="fa-solid fa-circle-user"></i>
+                    {{ currentUser.name }}
+                </span>
+                <button ng-click="logout()" class="btn btn-sm btn-primary logout-btn" title="Logout">
+                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Main View Container -->
+    <main class="main-content">
+        <div ng-view></div>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2026 Smart Canteen Pre-Order & Queue Management System</p>
+        </div>
+    </footer>
+
+</body>
+
+</html>

@@ -1,0 +1,83 @@
+<div style="max-width: 850px; margin: 1.5rem auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+            <h2 style="font-weight: 800; font-size: 2rem; color: var(--dark-color);">
+                <i class="fa-solid fa-location-crosshairs" style="color: var(--primary-color);"></i> Live Order Tracking
+            </h2>
+            <p style="color: var(--text-muted); font-size: 0.9rem;">Order ID: <strong>{{ order.id }}</strong> | Pickup Slot: <strong>{{ order.pickupSlot }}</strong></p>
+        </div>
+        <button ng-click="refreshStatus()" class="btn btn-outline btn-sm">
+            <i class="fa-solid fa-arrows-rotate"></i> Refresh Status
+        </button>
+    </div>
+
+    <!-- Tracking Status Timeline -->
+    <div class="card" style="padding: 2.5rem 1.5rem; margin-bottom: 2rem;">
+        <div style="text-align: center; margin-bottom: 2rem;">
+            <span style="font-size: 0.9rem; font-weight: 700; color: var(--text-muted); text-transform: uppercase;">Current Live Status</span>
+            <div style="font-size: 2rem; font-weight: 800; color: var(--primary-color); margin-top: 4px;">
+                {{ order.status }}
+            </div>
+        </div>
+
+        <div class="tracking-timeline">
+            <!-- Step 1: Placed -->
+            <div class="timeline-step" ng-class="getStatusStepClass('Placed')">
+                <div class="step-icon"><i class="fa-solid fa-file-lines"></i></div>
+                <div class="step-title">Placed</div>
+            </div>
+
+            <!-- Step 2: Accepted -->
+            <div class="timeline-step" ng-class="getStatusStepClass('Accepted')">
+                <div class="step-icon"><i class="fa-solid fa-check-double"></i></div>
+                <div class="step-title">Accepted</div>
+            </div>
+
+            <!-- Step 3: Preparing -->
+            <div class="timeline-step" ng-class="getStatusStepClass('Preparing')">
+                <div class="step-icon"><i class="fa-solid fa-fire-burner"></i></div>
+                <div class="step-title">Preparing</div>
+            </div>
+
+            <!-- Step 4: Ready for Pickup -->
+            <div class="timeline-step" ng-class="getStatusStepClass('Ready for Pickup')">
+                <div class="step-icon"><i class="fa-solid fa-bell"></i></div>
+                <div class="step-title">Ready for Pickup</div>
+            </div>
+
+            <!-- Step 5: Completed -->
+            <div class="timeline-step" ng-class="getStatusStepClass('Completed')">
+                <div class="step-icon"><i class="fa-solid fa-circle-check"></i></div>
+                <div class="step-title">Completed</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Order Items Breakdown -->
+    <div class="card">
+        <h3 style="font-weight: 800; color: var(--dark-color); margin-bottom: 1rem;">Order Items Details</h3>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>Food Item</th>
+                    <th>Price</th>
+                    <th>Qty</th>
+                    <th>Subtotal</th>
+                </tr>
+            </thead>
+            <tbody>
+                <tr ng-repeat="item in order.items">
+                    <td><strong>{{ item.name }}</strong></td>
+                    <td>₹{{ item.price }}</td>
+                    <td>{{ item.quantity }}</td>
+                    <td><strong>₹{{ item.price * item.quantity }}</strong></td>
+                </tr>
+            </tbody>
+        </table>
+
+        <div style="margin-top: 1rem; display: flex; justify-content: space-between; font-size: 1.2rem; font-weight: 800; border-top: 2px dashed var(--border-color); padding-top: 10px;">
+            <span>Total Paid Amount:</span>
+            <span style="color: var(--primary-color);">₹{{ order.totalAmount }}</span>
+        </div>
+    </div>
+</div>

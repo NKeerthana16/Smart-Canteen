@@ -1,0 +1,51 @@
+<div style="max-width: 1000px; margin: 1.5rem auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+            <h2 style="font-weight: 800; font-size: 2.2rem; color: var(--dark-color);">
+                <i class="fa-solid fa-users" style="color: var(--accent-blue);"></i> Registered User Management
+            </h2>
+            <p style="color: var(--text-muted);">View all registered student and admin accounts, toggle active access</p>
+        </div>
+    </div>
+
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>User Name</th>
+                        <th>Email Address</th>
+                        <th>Phone</th>
+                        <th>Role</th>
+                        <th>Registered Date</th>
+                        <th>Account Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="u in users">
+                        <td><strong>{{ u.name }}</strong></td>
+                        <td>{{ u.email }}</td>
+                        <td>{{ u.phone }}</td>
+                        <td>
+                            <span class="slot-status-badge" ng-class="u.role === 'admin' ? 'badge-full' : 'badge-available'">
+                                {{ u.role }}
+                            </span>
+                        </td>
+                        <td>{{ u.regDate }}</td>
+                        <td>
+                            <span class="slot-status-badge badge-available" ng-if="u.status === 'Active'">Active</span>
+                            <span class="slot-status-badge badge-full" ng-if="u.status !== 'Active'">Inactive</span>
+                        </td>
+                        <td>
+                            <button ng-click="toggleStatus(u)" class="btn btn-sm" ng-class="u.status === 'Active' ? 'btn-outline' : 'btn-primary'" style="min-width: 95px;">
+                                <i class="fa-solid" ng-class="u.status === 'Active' ? 'fa-user-slash' : 'fa-user-check'"></i>
+                                {{ u.status === 'Active' ? 'Deactivate' : 'Activate' }}
+                            </button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

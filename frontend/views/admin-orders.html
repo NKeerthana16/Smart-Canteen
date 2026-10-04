@@ -1,0 +1,84 @@
+<div style="max-width: 1150px; margin: 1.5rem auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+            <h2 style="font-weight: 800; font-size: 2.2rem; color: var(--dark-color);">
+                <i class="fa-solid fa-list-check" style="color: var(--primary-color);"></i> Live Order Queue & Status Control
+            </h2>
+            <p style="color: var(--text-muted);">Update order progress (Placed → Accepted → Preparing → Ready for Pickup → Completed)</p>
+        </div>
+    </div>
+
+    <!-- Status Filter Buttons -->
+    <div class="filter-container">
+        <div class="category-pills">
+            <button class="category-pill" ng-class="{'active': selectedStatusFilter === 'All'}" ng-click="filterByStatus('All')">
+                All Orders ({{ orders.length }})
+            </button>
+            <button class="category-pill" ng-repeat="st in statusOptions" 
+                    ng-class="{'active': selectedStatusFilter === st}" 
+                    ng-click="filterByStatus(st)">
+                {{ st }}
+            </button>
+        </div>
+    </div>
+
+    <!-- Orders Management Table -->
+    <div class="card">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Student Info</th>
+                        <th>Pickup Slot</th>
+                        <th>Order Items</th>
+                        <th>Total</th>
+                        <th>Update Live Status</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="order in orders | filter:customOrderFilter">
+                        <td>
+                            <strong style="color: var(--primary-color); font-size: 1.05rem;">{{ order.id }}</strong>
+                            <div style="font-size: 0.75rem; color: var(--text-muted);">{{ order.orderDate }}</div>
+                        </td>
+                        <td>
+                            <strong>{{ order.userName }}</strong>
+                            <div style="font-size: 0.8rem; color: var(--text-muted);">{{ order.userEmail }}</div>
+                        </td>
+                        <td>
+                            <span class="slot-status-badge badge-available" style="font-weight: 700;">
+                                <i class="fa-solid fa-clock"></i> {{ order.pickupSlot }}
+                            </span>
+                        </td>
+                        <td>
+                            <div ng-repeat="item in order.items" style="font-size: 0.85rem;">
+                                • {{ item.quantity }}x {{ item.name }} (₹{{ item.price * item.quantity }})
+                            </div>
+                            <div ng-if="order.notes" style="font-size: 0.75rem; color: var(--primary-color); margin-top: 4px; font-style: italic;">
+                                Note: {{ order.notes }}
+                            </div>
+                        </td>
+                        <td style="font-weight: 800; font-size: 1.1rem; color: var(--dark-color);">
+                            ₹{{ order.totalAmount }}
+                        </td>
+                        <td>
+                            <!-- Real-time Status Dropdown -->
+                            <select class="form-control" 
+                                    ng-model="order.status" 
+                                    ng-change="updateStatus(order, order.status)"
+                                    style="font-weight: 700; max-width: 170px;"
+                                    ng-class="{'alert-success': order.status === 'Completed', 'alert-danger': order.status === 'Cancelled'}">
+                                <option ng-repeat="st in statusOptions" value="{{ st }}">{{ st }}</option>
+                            </select>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+        <div ng-if="(orders | filter:customOrderFilter).length === 0" style="text-align: center; padding: 2.5rem; color: var(--text-muted);">
+            No orders match the selected status filter.
+        </div>
+    </div>
+</div>

@@ -1,0 +1,142 @@
+<div class="admin-dashboard-container">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+            <h2 style="font-weight: 800; font-size: 2.2rem; color: var(--dark-color);">
+                <i class="fa-solid fa-gauge-high" style="color: var(--primary-color);"></i> Admin Canteen Control Center
+            </h2>
+            <p style="color: var(--text-muted);">Overview of campus canteen sales, active orders, and queue occupancy</p>
+        </div>
+        <a href="#/admin-orders" class="btn btn-primary">
+            <i class="fa-solid fa-list-check"></i> Manage Orders
+        </a>
+    </div>
+
+    <!-- 6 Dashboard Stats Cards -->
+    <div class="stats-grid">
+        <div class="stat-card" style="border-left-color: var(--accent-blue);">
+            <div class="stat-icon" style="background-color: #e8f4f8; color: var(--accent-blue);">
+                <i class="fa-solid fa-users"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ totalUsers }}</h3>
+                <p>Total Registered Users</p>
+            </div>
+        </div>
+
+        <div class="stat-card" style="border-left-color: var(--secondary-color);">
+            <div class="stat-icon" style="background-color: var(--secondary-light); color: var(--secondary-color);">
+                <i class="fa-solid fa-burger"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ totalFoods }}</h3>
+                <p>Total Menu Items</p>
+            </div>
+        </div>
+
+        <div class="stat-card" style="border-left-color: var(--primary-color);">
+            <div class="stat-icon">
+                <i class="fa-solid fa-receipt"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ totalOrders }}</h3>
+                <p>Today's Total Orders</p>
+            </div>
+        </div>
+
+        <div class="stat-card" style="border-left-color: var(--warning-color);">
+            <div class="stat-icon" style="background-color: #fff8e1; color: #f57f17;">
+                <i class="fa-solid fa-clock-rotate-left"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ pendingOrders }}</h3>
+                <p>Pending / Active Orders</p>
+            </div>
+        </div>
+
+        <div class="stat-card" style="border-left-color: var(--success-color);">
+            <div class="stat-icon" style="background-color: #e8f5e9; color: var(--success-color);">
+                <i class="fa-solid fa-circle-check"></i>
+            </div>
+            <div class="stat-info">
+                <h3>{{ completedOrders }}</h3>
+                <p>Completed Orders</p>
+            </div>
+        </div>
+
+        <div class="stat-card" style="border-left-color: var(--accent-teal);">
+            <div class="stat-icon" style="background-color: #e0f2f1; color: var(--accent-teal);">
+                <i class="fa-solid fa-indian-rupee-sign"></i>
+            </div>
+            <div class="stat-info">
+                <h3>₹{{ todayRevenue }}</h3>
+                <p>Total Sales Revenue</p>
+            </div>
+        </div>
+    </div>
+
+    <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+        <!-- Recent Orders Queue -->
+        <div style="flex: 2; min-width: 320px;">
+            <div class="card">
+                <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+                    <h3 style="font-weight: 800; color: var(--dark-color);">Recent Pre-Orders Queue</h3>
+                    <a href="#/admin-orders" class="btn btn-outline btn-sm">View All Orders</a>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Student</th>
+                                <th>Slot</th>
+                                <th>Amount</th>
+                                <th>Status</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="ord in recentOrders">
+                                <td><strong style="color: var(--primary-color);">{{ ord.id }}</strong></td>
+                                <td>{{ ord.userName }}</td>
+                                <td><span class="slot-status-badge badge-available">{{ ord.pickupSlot }}</span></td>
+                                <td style="font-weight: 700;">₹{{ ord.totalAmount }}</td>
+                                <td>
+                                    <span class="slot-status-badge badge-available" ng-if="ord.status === 'Completed'">Completed</span>
+                                    <span class="slot-status-badge badge-full" ng-if="ord.status === 'Cancelled'">Cancelled</span>
+                                    <span class="slot-status-badge" style="background-color: #fff3cd; color: #856404;" ng-if="ord.status !== 'Completed' && ord.status !== 'Cancelled'">
+                                        {{ ord.status }}
+                                    </span>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Slot Occupancy Overview -->
+        <div style="flex: 1; min-width: 260px;">
+            <div class="card">
+                <h3 style="font-weight: 800; color: var(--dark-color); margin-bottom: 1rem;">
+                    <i class="fa-solid fa-clock"></i> Live Queue Slot Capacities
+                </h3>
+                
+                <div ng-repeat="slot in slots" style="margin-bottom: 12px; padding-bottom: 10px; border-bottom: 1px dashed var(--border-color);">
+                    <div style="display: flex; justify-content: space-between; font-weight: 700; font-size: 0.9rem;">
+                        <span>{{ slot.time }}</span>
+                        <span ng-class="{'color: var(--danger-color)': slot.status === 'SLOT FULL'}">{{ slot.bookedCount }} / {{ slot.maxCapacity }}</span>
+                    </div>
+                    <div style="background-color: #e9ecef; height: 8px; border-radius: 4px; margin-top: 6px; overflow: hidden;">
+                        <div style="background-color: var(--primary-color); height: 100%; transition: width 0.3s;" 
+                             ng-style="{'width': (slot.bookedCount / slot.maxCapacity * 100) + '%'}">
+                        </div>
+                    </div>
+                </div>
+
+                <a href="#/admin-slots" class="btn btn-outline btn-sm" style="width: 100%; margin-top: 1rem;">
+                    Manage Queue Slots & Limits
+                </a>
+            </div>
+        </div>
+    </div>
+</div>

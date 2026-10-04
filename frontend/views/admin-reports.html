@@ -1,0 +1,79 @@
+<div style="max-width: 1050px; margin: 1.5rem auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+            <h2 style="font-weight: 800; font-size: 2.2rem; color: var(--dark-color);">
+                <i class="fa-solid fa-chart-line" style="color: var(--primary-color);"></i> Canteen Reports & Analytics
+            </h2>
+            <p style="color: var(--text-muted);">Summary of order volume, revenue generated, and top seller dishes</p>
+        </div>
+    </div>
+
+    <!-- Summary Metrics Cards -->
+    <div class="stats-grid">
+        <div class="stat-card" style="border-left-color: var(--primary-color);">
+            <div class="stat-icon"><i class="fa-solid fa-receipt"></i></div>
+            <div class="stat-info">
+                <h3>{{ totalOrders }}</h3>
+                <p>Total Orders Placed</p>
+            </div>
+        </div>
+
+        <div class="stat-card" style="border-left-color: var(--success-color);">
+            <div class="stat-icon" style="background-color: #e8f5e9; color: var(--success-color);"><i class="fa-solid fa-check"></i></div>
+            <div class="stat-info">
+                <h3>{{ completedOrders }}</h3>
+                <p>Completed Orders</p>
+            </div>
+        </div>
+
+        <div class="stat-card" style="border-left-color: var(--warning-color);">
+            <div class="stat-icon" style="background-color: #fff8e1; color: #f57f17;"><i class="fa-solid fa-hourglass-half"></i></div>
+            <div class="stat-info">
+                <h3>{{ pendingOrders }}</h3>
+                <p>Pending Orders</p>
+            </div>
+        </div>
+
+        <div class="stat-card" style="border-left-color: var(--danger-color);">
+            <div class="stat-icon" style="background-color: #ffebee; color: var(--danger-color);"><i class="fa-solid fa-ban"></i></div>
+            <div class="stat-info">
+                <h3>{{ cancelledOrders }}</h3>
+                <p>Cancelled Orders</p>
+            </div>
+        </div>
+
+        <div class="stat-card" style="border-left-color: var(--accent-teal);" style="grid-column: span 2;">
+            <div class="stat-icon" style="background-color: #e0f2f1; color: var(--accent-teal);"><i class="fa-solid fa-sack-dollar"></i></div>
+            <div class="stat-info">
+                <h3>₹{{ totalRevenue }}</h3>
+                <p>Total Gross Revenue</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Top Selling Dishes Breakdown -->
+    <div class="card" style="margin-top: 1.5rem;">
+        <h3 style="font-weight: 800; color: var(--dark-color); margin-bottom: 1rem;">
+            <i class="fa-solid fa-trophy" style="color: var(--secondary-color);"></i> Most Ordered Food Items
+        </h3>
+
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Rank</th>
+                        <th>Food Item Name</th>
+                        <th>Total Quantity Sold</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="item in popularItems">
+                        <td><strong>#{{ $index + 1 }}</strong></td>
+                        <td>{{ item.name }}</td>
+                        <td style="font-weight: 800; color: var(--primary-color);">{{ item.count }} units</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

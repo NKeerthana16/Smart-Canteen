@@ -1,0 +1,89 @@
+<div style="max-width: 1050px; margin: 1.5rem auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+            <h2 style="font-weight: 800; font-size: 2.2rem; color: var(--dark-color);">
+                <i class="fa-solid fa-clock" style="color: var(--secondary-color);"></i> Pickup Queue Slot Management
+            </h2>
+            <p style="color: var(--text-muted);">Set maximum queue capacity per 30-minute time window to prevent canteen crowding</p>
+        </div>
+    </div>
+
+    <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+        <!-- Form Column (Add/Edit Slot) -->
+        <div style="flex: 1; min-width: 300px;">
+            <div class="card">
+                <h3 style="font-weight: 800; color: var(--dark-color); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">
+                    <span ng-if="!isEditing"><i class="fa-solid fa-circle-plus"></i> Add Pickup Slot</span>
+                    <span ng-if="isEditing"><i class="fa-solid fa-pen"></i> Edit Slot Capacity</span>
+                </h3>
+
+                <form ng-submit="saveSlot()">
+                    <div class="form-group">
+                        <label>Time Window</label>
+                        <input type="text" class="form-control" ng-model="slotForm.time" placeholder="e.g. 11:00 AM - 11:30 AM" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Maximum Queue Capacity (Max Orders)</label>
+                        <input type="number" class="form-control" ng-model="slotForm.maxCapacity" placeholder="10" min="1" required>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 1rem;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">
+                            <i class="fa-solid fa-floppy-disk"></i> {{ isEditing ? 'Update Slot' : 'Create Slot' }}
+                        </button>
+                        <button type="button" class="btn btn-outline" ng-click="resetForm()" ng-if="isEditing">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Slot Table Column -->
+        <div style="flex: 2; min-width: 340px;">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Pickup Time Slot</th>
+                                <th>Max Capacity</th>
+                                <th>Booked Count</th>
+                                <th>Remaining</th>
+                                <th>Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="slot in slots">
+                                <td><strong style="color: var(--dark-color);">{{ slot.time }}</strong></td>
+                                <td>{{ slot.maxCapacity }}</td>
+                                <td><strong>{{ slot.bookedCount }}</strong></td>
+                                <td><span style="color: var(--success-color); font-weight: 800;">{{ slot.remaining }}</span></td>
+                                <td>
+                                    <span class="slot-status-badge badge-full" ng-if="slot.status === 'SLOT FULL'">
+                                        <i class="fa-solid fa-lock"></i> SLOT FULL
+                                    </span>
+                                    <span class="slot-status-badge badge-available" ng-if="slot.status !== 'SLOT FULL'">
+                                        Available
+                                    </span>
+                                </td>
+                                <td>
+                                    <div style="display: flex; gap: 6px;">
+                                        <button ng-click="editSlot(slot)" class="btn btn-outline btn-sm" title="Edit slot capacity">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
+                                        <button ng-click="deleteSlot(slot.id)" class="btn btn-outline btn-sm" style="color: var(--danger-color); border-color: var(--danger-color);" title="Delete slot">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

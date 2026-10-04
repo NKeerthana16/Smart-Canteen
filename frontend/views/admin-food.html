@@ -1,0 +1,114 @@
+<div style="max-width: 1100px; margin: 1.5rem auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+            <h2 style="font-weight: 800; font-size: 2rem; color: var(--dark-color);">
+                <i class="fa-solid fa-burger" style="color: var(--secondary-color);"></i> Food Item Management
+            </h2>
+            <p style="color: var(--text-muted);">Add, edit, delete, or toggle availability of canteen dishes</p>
+        </div>
+    </div>
+
+    <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+        <!-- Form Column (Add / Edit) -->
+        <div style="flex: 1; min-width: 300px;">
+            <div class="card">
+                <h3 style="font-weight: 800; color: var(--dark-color); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">
+                    <span ng-if="!isEditing"><i class="fa-solid fa-circle-plus"></i> Add New Food</span>
+                    <span ng-if="isEditing"><i class="fa-solid fa-pen-to-square"></i> Edit Food Item</span>
+                </h3>
+
+                <form ng-submit="saveFood()">
+                    <div class="form-group">
+                        <label>Food Item Name</label>
+                        <input type="text" class="form-control" ng-model="formData.name" placeholder="e.g. Masala Dosa" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Category</label>
+                        <select class="form-control" ng-model="formData.category" required>
+                            <option ng-repeat="cat in categories" value="{{ cat.name }}">{{ cat.name }}</option>
+                        </select>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Price (₹)</label>
+                        <input type="number" class="form-control" ng-model="formData.price" placeholder="50" min="1" step="1" required>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Description</label>
+                        <textarea class="form-control" ng-model="formData.description" rows="2" placeholder="Brief description of dish..."></textarea>
+                    </div>
+
+                    <div class="form-group">
+                        <label>Image URL</label>
+                        <input type="url" class="form-control" ng-model="formData.image" placeholder="https://images.unsplash.com/...">
+                    </div>
+
+                    <div class="form-group" style="display: flex; align-items: center; gap: 8px;">
+                        <input type="checkbox" id="availableCheck" ng-model="formData.available">
+                        <label for="availableCheck" style="margin-bottom: 0; cursor: pointer;">Available for Ordering</label>
+                    </div>
+
+                    <div style="display: flex; gap: 10px; margin-top: 1rem;">
+                        <button type="submit" class="btn btn-primary" style="flex: 1;">
+                            <i class="fa-solid fa-floppy-disk"></i> {{ isEditing ? 'Update Food' : 'Save Food' }}
+                        </button>
+                        <button type="button" class="btn btn-outline" ng-click="resetForm()" ng-if="isEditing">
+                            Cancel
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <!-- Food List Table Column -->
+        <div style="flex: 2; min-width: 340px;">
+            <div class="card">
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th>Item</th>
+                                <th>Category</th>
+                                <th>Price</th>
+                                <th>Stock Status</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="food in foods">
+                                <td>
+                                    <div style="display: flex; align-items: center; gap: 10px;">
+                                        <img ng-src="{{ food.image }}" alt="{{ food.name }}" style="width: 40px; height: 40px; object-fit: cover; border-radius: 6px;">
+                                        <strong>{{ food.name }}</strong>
+                                    </div>
+                                </td>
+                                <td>{{ food.category }}</td>
+                                <td style="font-weight: 800; color: var(--primary-color);">₹{{ food.price }}</td>
+                                <td>
+                                    <button ng-click="toggleAvailability(food.id)" 
+                                            class="btn btn-sm" 
+                                            ng-class="food.available ? 'btn-secondary' : 'btn-outline'"
+                                            style="padding: 2px 8px; font-size: 0.75rem;">
+                                        {{ food.available ? 'Available' : 'Disabled' }}
+                                    </button>
+                                </td>
+                                <td>
+                                    <div style="display: flex; gap: 6px;">
+                                        <button ng-click="editFood(food)" class="btn btn-outline btn-sm" title="Edit">
+                                            <i class="fa-solid fa-pen"></i>
+                                        </button>
+                                        <button ng-click="deleteFood(food.id)" class="btn btn-outline btn-sm" style="color: var(--danger-color); border-color: var(--danger-color);" title="Delete">
+                                            <i class="fa-solid fa-trash-can"></i>
+                                        </button>
+                                    </div>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

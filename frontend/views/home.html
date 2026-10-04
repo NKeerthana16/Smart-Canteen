@@ -1,0 +1,85 @@
+<div class="home-container">
+    <!-- Hero Banner -->
+    <div class="hero-banner">
+        <div class="hero-text">
+            <h1>Campus Canteen Pre-Order & Queue Management</h1>
+            <p>Skip the long queue! Order your favorite food ahead of time, choose your preferred pickup slot, and pick up your meal fresh and hot.</p>
+            <div class="hero-btns">
+                <button ng-click="goToMenu()" class="btn btn-secondary">
+                    <i class="fa-solid fa-utensils"></i> Order Now
+                </button>
+                <a href="#/login" class="btn btn-outline" style="border-color: white; color: white;" ng-if="!isLoggedIn">
+                    <i class="fa-solid fa-right-to-bracket"></i> Login
+                </a>
+                <a href="#/register" class="btn btn-primary" ng-if="!isLoggedIn">
+                    <i class="fa-solid fa-user-plus"></i> Register
+                </a>
+            </div>
+        </div>
+        <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?auto=format&fit=crop&w=600&q=80" alt="Canteen Food" class="hero-img">
+    </div>
+
+    <!-- Features Section -->
+    <div style="margin-bottom: 3rem;">
+        <h2 style="text-align: center; font-weight: 800; font-size: 2rem; color: var(--dark-color); margin-bottom: 1.5rem;">
+            Why Use Smart Canteen?
+        </h2>
+        <div class="grid-cards" style="grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));">
+            <div class="card" style="text-align: center;">
+                <div style="font-size: 2.5rem; color: var(--primary-color); margin-bottom: 1rem;">
+                    <i class="fa-solid fa-clock-rotate-left"></i>
+                </div>
+                <h3 style="font-weight: 700; margin-bottom: 8px;">Skip Long Queues</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">No more waiting in 20-minute canteen lines during lunch break.</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <div style="font-size: 2.5rem; color: var(--secondary-color); margin-bottom: 1rem;">
+                    <i class="fa-solid fa-calendar-check"></i>
+                </div>
+                <h3 style="font-weight: 700; margin-bottom: 8px;">Select Pickup Slots</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Choose a convenient 30-minute pickup window with real-time slot capacity tracking.</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <div style="font-size: 2.5rem; color: var(--accent-teal); margin-bottom: 1rem;">
+                    <i class="fa-solid fa-location-dot"></i>
+                </div>
+                <h3 style="font-weight: 700; margin-bottom: 8px;">Live Order Tracking</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Track your order from Placed → Accepted → Preparing → Ready for Pickup.</p>
+            </div>
+            <div class="card" style="text-align: center;">
+                <div style="font-size: 2.5rem; color: var(--accent-blue); margin-bottom: 1rem;">
+                    <i class="fa-solid fa-mobile-screen-button"></i>
+                </div>
+                <h3 style="font-weight: 700; margin-bottom: 8px;">Easy Mobile Pre-Order</h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">Browse food menus, add items to cart, and place pre-orders in seconds.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- Featured Menu Preview -->
+    <div>
+        <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+            <h2 style="font-weight: 800; font-size: 1.8rem; color: var(--dark-color);">Today's Canteen Highlights</h2>
+            <a href="#/menu" class="btn btn-outline btn-sm">View Full Menu <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+
+        <div class="grid-cards">
+            <div class="food-card" ng-repeat="item in featuredFoods">
+                <div class="food-img-wrapper">
+                    <img ng-src="{{ item.image }}" alt="{{ item.name }}" class="food-img">
+                    <span class="food-category-badge">{{ item.category }}</span>
+                </div>
+                <div class="food-details-body">
+                    <h3 class="food-title">{{ item.name }}</h3>
+                    <p class="food-desc">{{ item.description }}</p>
+                    <div class="food-price-row">
+                        <span class="food-price">₹{{ item.price }}</span>
+                        <a href="#/food-details/{{ item.id }}" class="btn btn-primary btn-sm">
+                            <i class="fa-solid fa-eye"></i> Details
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

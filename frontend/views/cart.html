@@ -1,0 +1,104 @@
+<div style="max-width: 900px; margin: 1.5rem auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2 style="font-weight: 800; font-size: 2rem; color: var(--dark-color);">
+            <i class="fa-solid fa-cart-shopping" style="color: var(--primary-color);"></i> My Pre-Order Cart
+        </h2>
+        <a href="#/menu" class="btn btn-outline btn-sm"><i class="fa-solid fa-plus"></i> Add More Food</a>
+    </div>
+
+    <!-- Empty Cart State -->
+    <div class="card" style="text-align: center; padding: 3rem;" ng-if="cart.length === 0">
+        <i class="fa-solid fa-basket-shopping" style="font-size: 4rem; color: var(--text-muted); margin-bottom: 1rem; opacity: 0.5;"></i>
+        <h3 style="font-weight: 700; color: var(--dark-color); margin-bottom: 8px;">Your cart is currently empty</h3>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">Browse our canteen menu and add your favorite dishes!</p>
+        <a href="#/menu" class="btn btn-primary"><i class="fa-solid fa-utensils"></i> View Food Menu</a>
+    </div>
+
+    <!-- Cart Items Table & Summary -->
+    <div style="display: flex; gap: 2rem; flex-wrap: wrap;" ng-if="cart.length > 0">
+        <!-- Table Column -->
+        <div style="flex: 2; min-width: 320px;">
+            <div class="table-responsive">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th>Food Item</th>
+                            <th>Price</th>
+                            <th>Quantity</th>
+                            <th>Subtotal</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="item in cart">
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 12px;">
+                                    <img ng-src="{{ item.image }}" alt="{{ item.name }}" style="width: 45px; height: 45px; object-fit: cover; border-radius: 6px;">
+                                    <div>
+                                        <strong style="color: var(--dark-color); display: block;">{{ item.name }}</strong>
+                                        <small style="color: var(--text-muted);">{{ item.category }}</small>
+                                    </div>
+                                </div>
+                            </td>
+                            <td style="font-weight: 700;">₹{{ item.price }}</td>
+                            <td>
+                                <div style="display: flex; align-items: center; gap: 6px;">
+                                    <button ng-click="decreaseQty(item)" class="btn btn-outline btn-sm" style="padding: 2px 8px;">-</button>
+                                    <span style="font-weight: 800; min-width: 20px; text-align: center;">{{ item.quantity }}</span>
+                                    <button ng-click="increaseQty(item)" class="btn btn-outline btn-sm" style="padding: 2px 8px;">+</button>
+                                </div>
+                            </td>
+                            <td style="font-weight: 800; color: var(--primary-color);">
+                                ₹{{ item.price * item.quantity }}
+                            </td>
+                            <td>
+                                <button ng-click="removeItem(item.id)" class="btn btn-outline btn-sm" style="color: var(--danger-color); border-color: var(--danger-color);" title="Remove Item">
+                                    <i class="fa-solid fa-trash-can"></i>
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+
+            <div style="margin-top: 1rem; display: flex; justify-content: space-between;">
+                <button ng-click="clearCart()" class="btn btn-outline btn-sm" style="color: var(--danger-color); border-color: var(--danger-color);">
+                    <i class="fa-solid fa-broom"></i> Clear Cart
+                </button>
+            </div>
+        </div>
+
+        <!-- Order Summary Box -->
+        <div style="flex: 1; min-width: 260px;">
+            <div class="card">
+                <h3 style="font-weight: 800; color: var(--dark-color); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">
+                    Order Summary
+                </h3>
+
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem;">
+                    <span>Total Items:</span>
+                    <strong>{{ cart.length }} item(s)</strong>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem;">
+                    <span>Subtotal:</span>
+                    <span>₹{{ totalAmount }}</span>
+                </div>
+
+                <div style="display: flex; justify-content: space-between; margin-bottom: 10px; font-size: 0.95rem;">
+                    <span>Queue Slot Reservation:</span>
+                    <span style="color: var(--success-color); font-weight: 700;">FREE</span>
+                </div>
+
+                <div style="border-top: 2px dashed var(--border-color); padding-top: 12px; margin-top: 12px; display: flex; justify-content: space-between; font-size: 1.3rem; font-weight: 800; color: var(--primary-color);">
+                    <span>Total Pay:</span>
+                    <span>₹{{ totalAmount }}</span>
+                </div>
+
+                <button ng-click="proceedToCheckout()" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem; padding: 12px;">
+                    Proceed to Slot Selection <i class="fa-solid fa-arrow-right"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,106 @@
+<div style="max-width: 900px; margin: 1.5rem auto;">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <h2 style="font-weight: 800; font-size: 2.2rem; color: var(--dark-color);">Pre-Order Checkout & Queue Slot Selection</h2>
+        <p style="color: var(--text-muted);">Reserve your food & pickup time slot to avoid canteen rush</p>
+    </div>
+
+    <div class="alert alert-danger" ng-show="errorMessage">
+        <i class="fa-solid fa-triangle-exclamation"></i> {{ errorMessage }}
+    </div>
+
+    <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+        <!-- Left: Slot & Date Selection -->
+        <div style="flex: 2; min-width: 320px;">
+            <!-- Pickup Date Picker -->
+            <div class="card" style="margin-bottom: 1.5rem;">
+                <h3 style="font-weight: 800; color: var(--dark-color); margin-bottom: 1rem;">
+                    <i class="fa-solid fa-calendar-days" style="color: var(--primary-color);"></i> 1. Select Pickup Date
+                </h3>
+                <div class="form-group" style="margin-bottom: 0;">
+                    <input type="date" class="form-control" ng-model="checkoutData.pickupDate" style="font-weight: 700; max-width: 250px;" required>
+                </div>
+            </div>
+
+            <!-- Queue Pickup Slot Selector (VERY IMPORTANT FEATURE) -->
+            <div class="card">
+                <h3 style="font-weight: 800; color: var(--dark-color); margin-bottom: 0.5rem;">
+                    <i class="fa-solid fa-clock" style="color: var(--secondary-color);"></i> 2. Choose Pickup Queue Time Slot
+                </h3>
+                <p style="font-size: 0.85rem; color: var(--text-muted); margin-bottom: 1rem;">
+                    Slots automatically lock when maximum queue capacity is reached (`SLOT FULL`).
+                </p>
+
+                <!-- Slots Grid -->
+                <div class="slots-grid">
+                    <div class="slot-card" 
+                         ng-repeat="slot in slots" 
+                         ng-click="selectSlot(slot)"
+                         ng-class="{'selected': checkoutData.selectedSlot === slot.time, 'disabled': slot.status === 'SLOT FULL'}">
+                        
+                        <div class="slot-time">{{ slot.time }}</div>
+                        <div class="slot-capacity">
+                            Capacity: <strong>{{ slot.bookedCount }} / {{ slot.maxCapacity }}</strong> booked
+                        </div>
+                        <div class="slot-capacity" style="margin-top: 2px;">
+                            Remaining: <strong style="color: var(--success-color);">{{ slot.remaining }}</strong>
+                        </div>
+
+                        <!-- Slot Status Badge -->
+                        <span class="slot-status-badge badge-full" ng-if="slot.status === 'SLOT FULL'">
+                            <i class="fa-solid fa-lock"></i> SLOT FULL
+                        </span>
+                        <span class="slot-status-badge badge-available" ng-if="slot.status !== 'SLOT FULL'">
+                            <i class="fa-solid fa-check"></i> Available
+                        </span>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Additional Notes -->
+            <div class="card" style="margin-top: 1.5rem;">
+                <h3 style="font-weight: 800; color: var(--dark-color); margin-bottom: 1rem;">
+                    <i class="fa-solid fa-comment-medical" style="color: var(--accent-blue);"></i> 3. Additional Instructions (Optional)
+                </h3>
+                <div class="form-group">
+                    <textarea class="form-control" ng-model="checkoutData.notes" rows="2" placeholder="e.g. Less spicy, extra sauce, pack separately..."></textarea>
+                </div>
+            </div>
+        </div>
+
+        <!-- Right: Order Summary & Place Button -->
+        <div style="flex: 1; min-width: 280px;">
+            <div class="card" style="position: sticky; top: 90px;">
+                <h3 style="font-weight: 800; color: var(--dark-color); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">
+                    Order Confirmation
+                </h3>
+
+                <div style="margin-bottom: 1rem;">
+                    <label style="font-size: 0.85rem; font-weight: 700; color: var(--text-muted); display: block; margin-bottom: 4px;">Items:</label>
+                    <div ng-repeat="item in cart" style="display: flex; justify-content: space-between; font-size: 0.9rem; margin-bottom: 4px;">
+                        <span>{{ item.quantity }} x {{ item.name }}</span>
+                        <strong>₹{{ item.price * item.quantity }}</strong>
+                    </div>
+                </div>
+
+                <div style="margin-bottom: 1rem; padding-top: 10px; border-top: 1px dashed var(--border-color);">
+                    <div style="font-size: 0.85rem; color: var(--text-muted);">Selected Pickup Slot:</div>
+                    <strong style="font-size: 1rem; color: var(--primary-color);" ng-if="checkoutData.selectedSlot">
+                        {{ checkoutData.selectedSlot }}
+                    </strong>
+                    <span style="color: var(--danger-color); font-weight: 700; font-size: 0.85rem;" ng-if="!checkoutData.selectedSlot">
+                        None selected
+                    </span>
+                </div>
+
+                <div style="border-top: 2px solid var(--border-color); padding-top: 10px; margin-top: 10px; display: flex; justify-content: space-between; font-size: 1.4rem; font-weight: 800; color: var(--dark-color);">
+                    <span>Total Amount:</span>
+                    <span style="color: var(--primary-color);">₹{{ totalAmount }}</span>
+                </div>
+
+                <button ng-click="placeOrder()" class="btn btn-primary" style="width: 100%; margin-top: 1.5rem; padding: 14px; font-size: 1.05rem;" ng-disabled="!checkoutData.selectedSlot">
+                    <i class="fa-solid fa-circle-check"></i> Confirm Pre-Order
+                </button>
+            </div>
+        </div>
+    </div>
+</div>

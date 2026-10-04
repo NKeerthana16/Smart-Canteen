@@ -1,0 +1,65 @@
+<div style="max-width: 950px; margin: 1.5rem auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <h2 style="font-weight: 800; font-size: 2rem; color: var(--dark-color);">
+            <i class="fa-solid fa-receipt" style="color: var(--accent-blue);"></i> My Order History
+        </h2>
+        <a href="#/menu" class="btn btn-primary btn-sm"><i class="fa-solid fa-plus"></i> New Order</a>
+    </div>
+
+    <!-- Empty Orders State -->
+    <div class="card" style="text-align: center; padding: 3rem;" ng-if="orders.length === 0">
+        <i class="fa-solid fa-receipt" style="font-size: 4rem; color: var(--text-muted); opacity: 0.4; margin-bottom: 1rem;"></i>
+        <h3 style="font-weight: 700; color: var(--dark-color); margin-bottom: 8px;">No orders found</h3>
+        <p style="color: var(--text-muted); margin-bottom: 1.5rem;">You haven't placed any canteen pre-orders yet.</p>
+        <a href="#/menu" class="btn btn-primary">Browse Canteen Menu</a>
+    </div>
+
+    <!-- Orders Table -->
+    <div class="card" ng-if="orders.length > 0">
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>Order ID</th>
+                        <th>Date & Time</th>
+                        <th>Pickup Slot</th>
+                        <th>Items</th>
+                        <th>Total</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr ng-repeat="order in orders">
+                        <td><strong style="color: var(--primary-color);">{{ order.id }}</strong></td>
+                        <td>{{ order.orderDate }}</td>
+                        <td><span class="slot-status-badge badge-available">{{ order.pickupSlot }}</span></td>
+                        <td>
+                            <div ng-repeat="item in order.items" style="font-size: 0.85rem;">
+                                {{ item.quantity }}x {{ item.name }}
+                            </div>
+                        </td>
+                        <td style="font-weight: 800; color: var(--dark-color);">₹{{ order.totalAmount }}</td>
+                        <td>
+                            <span class="slot-status-badge badge-available" ng-if="order.status === 'Completed'">Completed</span>
+                            <span class="slot-status-badge badge-full" ng-if="order.status === 'Cancelled'">Cancelled</span>
+                            <span class="slot-status-badge" style="background-color: #fff3cd; color: #856404;" ng-if="order.status !== 'Completed' && order.status !== 'Cancelled'">
+                                {{ order.status }}
+                            </span>
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 6px;">
+                                <a href="#/order-tracking/{{ order.id }}" class="btn btn-outline btn-sm" title="Track order">
+                                    <i class="fa-solid fa-location-crosshairs"></i> Track
+                                </a>
+                                <a href="#/feedback" class="btn btn-secondary btn-sm" title="Feedback">
+                                    <i class="fa-solid fa-star"></i>
+                                </a>
+                            </div>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>

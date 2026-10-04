@@ -1,0 +1,92 @@
+<div class="dashboard-container">
+    <!-- Welcome Header -->
+    <div class="card" style="background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%); color: white; margin-bottom: 1.5rem;">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <div>
+                <h2 style="font-weight: 800; font-size: 1.8rem; margin-bottom: 4px;">Welcome back, {{ user.name }}!</h2>
+                <p style="opacity: 0.9; font-size: 0.95rem;"><i class="fa-solid fa-graduation-cap"></i> Student Portal | Pre-Order & Queue Control</p>
+            </div>
+            <div style="display: flex; gap: 10px;">
+                <a href="#/menu" class="btn btn-secondary"><i class="fa-solid fa-utensils"></i> Browse Menu</a>
+                <a href="#/cart" class="btn btn-outline" style="border-color: white; color: white;">
+                    <i class="fa-solid fa-cart-shopping"></i> My Cart ({{ cartCount }})
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Active Order Banner Alert -->
+    <div class="card" style="border-left: 5px solid var(--accent-teal); margin-bottom: 2rem;" ng-if="activeOrder">
+        <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 15px;">
+            <div>
+                <span class="slot-status-badge badge-available" style="font-size: 0.85rem; padding: 4px 12px; margin-bottom: 6px;">
+                    <i class="fa-solid fa-fire-burner"></i> ACTIVE ORDER
+                </span>
+                <h3 style="font-weight: 800; color: var(--dark-color); margin-bottom: 4px;">
+                    Order {{ activeOrder.id }} - Pickup: {{ activeOrder.pickupSlot }}
+                </h3>
+                <p style="font-size: 0.9rem; color: var(--text-muted);">
+                    Current Status: <strong style="color: var(--primary-color);">{{ activeOrder.status }}</strong> | Total: ₹{{ activeOrder.totalAmount }}
+                </p>
+            </div>
+            <a href="#/order-tracking/{{ activeOrder.id }}" class="btn btn-primary">
+                <i class="fa-solid fa-location-crosshairs"></i> Track Live Status
+            </a>
+        </div>
+    </div>
+
+    <!-- Quick Navigation Dashboard Cards -->
+    <h3 style="font-weight: 800; color: var(--dark-color); margin-bottom: 1rem;">Quick Shortcuts</h3>
+    <div class="grid-cards" style="grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); margin-bottom: 2rem;">
+        <a href="#/menu" class="card" style="text-align: center; cursor: pointer;">
+            <div style="font-size: 2.2rem; color: var(--primary-color); margin-bottom: 8px;">
+                <i class="fa-solid fa-utensils"></i>
+            </div>
+            <h4 style="font-weight: 700; color: var(--dark-color);">Explore Menu</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">View all categories</p>
+        </a>
+
+        <a href="#/cart" class="card" style="text-align: center; cursor: pointer;">
+            <div style="font-size: 2.2rem; color: var(--secondary-color); margin-bottom: 8px;">
+                <i class="fa-solid fa-cart-shopping"></i>
+            </div>
+            <h4 style="font-weight: 700; color: var(--dark-color);">My Cart</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">{{ cartCount }} item(s) pending</p>
+        </a>
+
+        <a href="#/my-orders" class="card" style="text-align: center; cursor: pointer;">
+            <div style="font-size: 2.2rem; color: var(--accent-blue); margin-bottom: 8px;">
+                <i class="fa-solid fa-receipt"></i>
+            </div>
+            <h4 style="font-weight: 700; color: var(--dark-color);">My Orders</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">{{ recentOrders.length }} total order(s)</p>
+        </a>
+
+        <a href="#/profile" class="card" style="text-align: center; cursor: pointer;">
+            <div style="font-size: 2.2rem; color: var(--accent-teal); margin-bottom: 8px;">
+                <i class="fa-solid fa-user-gear"></i>
+            </div>
+            <h4 style="font-weight: 700; color: var(--dark-color);">Profile Settings</h4>
+            <p style="font-size: 0.8rem; color: var(--text-muted);">Update details</p>
+        </a>
+    </div>
+
+    <!-- Today's Menu Highlights -->
+    <h3 style="font-weight: 800; color: var(--dark-color); margin-bottom: 1rem;">Available Canteen Foods</h3>
+    <div class="grid-cards">
+        <div class="food-card" ng-repeat="item in todaysFoods">
+            <div class="food-img-wrapper">
+                <img ng-src="{{ item.image }}" alt="{{ item.name }}" class="food-img">
+                <span class="food-category-badge">{{ item.category }}</span>
+            </div>
+            <div class="food-details-body">
+                <h4 class="food-title">{{ item.name }}</h4>
+                <p class="food-desc">{{ item.description }}</p>
+                <div class="food-price-row">
+                    <span class="food-price">₹{{ item.price }}</span>
+                    <a href="#/food-details/{{ item.id }}" class="btn btn-outline btn-sm">View Details</a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

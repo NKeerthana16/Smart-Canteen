@@ -1,0 +1,70 @@
+<div class="menu-container">
+    <div style="text-align: center; margin-bottom: 2rem;">
+        <h2 style="font-weight: 800; font-size: 2.2rem; color: var(--dark-color);">Canteen Food Menu</h2>
+        <p style="color: var(--text-muted);">Freshly prepared delicious food available for pre-order</p>
+    </div>
+
+    <!-- Filter & Search Controls -->
+    <div class="filter-container">
+        <!-- Category Pills -->
+        <div class="category-pills">
+            <button class="category-pill" ng-class="{'active': selectedCategory === 'All'}" ng-click="filterCategory('All')">
+                All Items
+            </button>
+            <button class="category-pill" 
+                    ng-repeat="cat in categories" 
+                    ng-class="{'active': selectedCategory === cat.name}" 
+                    ng-click="filterCategory(cat.name)">
+                {{ cat.name }}
+            </button>
+        </div>
+
+        <!-- Live Search Input -->
+        <div class="search-box">
+            <i class="fa-solid fa-magnifying-glass"></i>
+            <input type="text" class="form-control" ng-model="searchQuery" placeholder="Search food (e.g. Dosa)...">
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div class="toast-alert" ng-show="toastMessage">
+        <i class="fa-solid fa-circle-check" style="color: var(--accent-teal);"></i> {{ toastMessage }}
+    </div>
+
+    <!-- Foods Grid -->
+    <div class="grid-cards">
+        <div class="food-card" ng-repeat="food in foods | filter:searchQuery | filter:customCategoryFilter">
+            <div class="food-img-wrapper">
+                <img ng-src="{{ food.image }}" alt="{{ food.name }}" class="food-img">
+                <span class="food-category-badge">{{ food.category }}</span>
+                <span class="slot-status-badge badge-full" style="position: absolute; bottom: 10px; right: 10px;" ng-if="!food.available">
+                    Unavailable
+                </span>
+                <span class="slot-status-badge badge-available" style="position: absolute; bottom: 10px; right: 10px;" ng-if="food.available">
+                    In Stock
+                </span>
+            </div>
+            <div class="food-details-body">
+                <h3 class="food-title">{{ food.name }}</h3>
+                <p class="food-desc">{{ food.description }}</p>
+                
+                <div class="food-price-row">
+                    <span class="food-price">₹{{ food.price }}</span>
+                    <div style="display: flex; gap: 8px;">
+                        <a href="#/food-details/{{ food.id }}" class="btn btn-outline btn-sm" title="View details">
+                            <i class="fa-solid fa-eye"></i>
+                        </a>
+                        <button ng-click="addToCart(food)" class="btn btn-primary btn-sm" ng-disabled="!food.available">
+                            <i class="fa-solid fa-cart-plus"></i> Add
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div ng-if="(foods | filter:searchQuery | filter:customCategoryFilter).length === 0" style="text-align: center; padding: 3rem; color: var(--text-muted);">
+        <i class="fa-solid fa-utensils" style="font-size: 3rem; margin-bottom: 1rem; display: block; opacity: 0.4;"></i>
+        <p style="font-size: 1.1rem; font-weight: 600;">No food items match your filter criteria.</p>
+    </div>
+</div>

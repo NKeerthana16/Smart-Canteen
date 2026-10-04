@@ -1,0 +1,58 @@
+<div style="max-width: 750px; margin: 1.5rem auto;">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
+        <div>
+            <h2 style="font-weight: 800; font-size: 2rem; color: var(--dark-color);">
+                <i class="fa-solid fa-tags" style="color: var(--accent-blue);"></i> Food Category Management
+            </h2>
+            <p style="color: var(--text-muted);">Manage food menu classification categories</p>
+        </div>
+    </div>
+
+    <div style="display: flex; gap: 2rem; flex-wrap: wrap;">
+        <!-- Add Category Box -->
+        <div style="flex: 1; min-width: 280px;">
+            <div class="card">
+                <h3 style="font-weight: 800; color: var(--dark-color); margin-bottom: 1rem; border-bottom: 2px solid var(--border-color); padding-bottom: 8px;">
+                    <i class="fa-solid fa-circle-plus"></i> Add Category
+                </h3>
+
+                <form ng-submit="addCategory()">
+                    <div class="form-group">
+                        <label>Category Name</label>
+                        <input type="text" class="form-control" ng-model="newCategoryName" placeholder="e.g. Desserts, Soups..." required>
+                    </div>
+
+                    <button type="submit" class="btn btn-primary" style="width: 100%;">
+                        <i class="fa-solid fa-plus"></i> Save Category
+                    </button>
+                </form>
+            </div>
+        </div>
+
+        <!-- Category List Table -->
+        <div style="flex: 1.5; min-width: 300px;">
+            <div class="card">
+                <table class="table">
+                    <thead>
+                        <tr>
+                            <th># ID</th>
+                            <th>Category Name</th>
+                            <th>Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr ng-repeat="cat in categories">
+                            <td>#{{ cat.id }}</td>
+                            <td><strong>{{ cat.name }}</strong></td>
+                            <td>
+                                <button ng-click="deleteCategory(cat.id)" class="btn btn-outline btn-sm" style="color: var(--danger-color); border-color: var(--danger-color);">
+                                    <i class="fa-solid fa-trash-can"></i> Delete
+                                </button>
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
