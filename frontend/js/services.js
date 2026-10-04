@@ -20,26 +20,28 @@ app.factory("AuthService", function($http, $window, API_BASE_URL) {
                 email: email,
                 password: password
             }).then(function(response) {
-                if (response.data.success) {
+                if (response.data && response.data.success) {
                     $window.localStorage.setItem("jwtToken", response.data.token);
                     $window.localStorage.setItem("currentUser", JSON.stringify(response.data.user));
                 }
                 return response.data;
             }, function(error) {
-                return error.data || { success: false, message: "Login failed." };
+                var errMsg = (error.data && error.data.message) ? error.data.message : (error.data || "Login failed. Could not connect to authentication server.");
+                return { success: false, message: errMsg };
             });
         },
 
         register: function(userData) {
             return $http.post(API_BASE_URL + "/auth/register", userData)
                 .then(function(response) {
-                    if (response.data.success) {
+                    if (response.data && response.data.success) {
                         $window.localStorage.setItem("jwtToken", response.data.token);
                         $window.localStorage.setItem("currentUser", JSON.stringify(response.data.user));
                     }
                     return response.data;
                 }, function(error) {
-                    return error.data || { success: false, message: "Registration failed." };
+                    var errMsg = (error.data && error.data.message) ? error.data.message : (error.data || "Registration failed. Could not connect to authentication server.");
+                    return { success: false, message: errMsg };
                 });
         },
 

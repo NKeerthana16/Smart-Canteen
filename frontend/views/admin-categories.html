@@ -1,4 +1,4 @@
-<div style="max-width: 750px; margin: 1.5rem auto;">
+<div style="max-width: 1000px; margin: 1.5rem auto;">
     <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1.5rem;">
         <div>
             <h2 style="font-weight: 800; font-size: 2rem; color: var(--dark-color);">
@@ -30,28 +30,30 @@
         </div>
 
         <!-- Category List Table -->
-        <div style="flex: 1.5; min-width: 300px;">
+        <div style="flex: 1.8; min-width: 320px;">
             <div class="card">
-                <table class="table">
-                    <thead>
-                        <tr>
-                            <th># ID</th>
-                            <th>Category Name</th>
-                            <th>Action</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr ng-repeat="cat in categories">
-                            <td>#{{ cat.id }}</td>
-                            <td><strong>{{ cat.name }}</strong></td>
-                            <td>
-                                <button ng-click="deleteCategory(cat.id)" class="btn btn-outline btn-sm" style="color: var(--danger-color); border-color: var(--danger-color);">
-                                    <i class="fa-solid fa-trash-can"></i> Delete
-                                </button>
-                            </td>
-                        </tr>
-                    </tbody>
-                </table>
+                <div class="table-responsive">
+                    <table class="table">
+                        <thead>
+                            <tr>
+                                <th style="width: 70px;">#</th>
+                                <th>Category Name</th>
+                                <th style="text-align: right;">Action</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr ng-repeat="cat in categories">
+                                <td><span class="badge" style="background: var(--bg-light); color: var(--text-muted); font-weight: 700;">#{{ $index + 1 }}</span></td>
+                                <td><strong style="font-size: 1.05rem; color: var(--dark-color);">{{ cat.name }}</strong></td>
+                                <td style="text-align: right;">
+                                    <button ng-click="deleteCategory(cat.id)" class="btn btn-outline btn-sm" style="color: var(--danger-color); border-color: var(--danger-color);">
+                                        <i class="fa-solid fa-trash-can"></i> Delete
+                                    </button>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
             </div>
         </div>
     </div>
